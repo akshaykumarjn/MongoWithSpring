@@ -16,11 +16,11 @@ public interface BookStoreRepository extends MongoRepository<Books, String> {
 	@Query("{rating: ?0}")
 	List<Books> findItemByRating(Integer rating);
 
-	@Query("{genre: {$elemMatch:'?0'}}")
+	@Query("{genres: '?0'}}")
 	List<Books> findItemByGenre(String genre);
 	
 	@Query(value = "{author:'?0'}")
 	List<Books> findItemByAuthor(String author);
 	
-	public long count();
+	long count();
 }
