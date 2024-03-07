@@ -13,8 +13,8 @@ public class Books {
 	private String id;
 	private String title;
 	private String author;
-	private int pages;
-	private int rating;
+	private Integer pages;
+	private Integer rating;
 	private List<String> genres = new ArrayList<>();
 	private List<Review> reviews = new ArrayList<>();
 	
@@ -22,7 +22,7 @@ public class Books {
 		
 	}
 
-	public Books(String id, String title, String author, int pages, int rating, List<String> genres, List<Review> reviews) {
+	public Books(String id, String title, String author, Integer pages, Integer rating, List<String> genres, List<Review> reviews) {
 		super();
 		this.id = id;
 		this.title = title;
@@ -49,19 +49,19 @@ public class Books {
 		this.author = author;
 	}
 
-	public int getPages() {
+	public Integer getPages() {
 		return pages;
 	}
 
-	public void setPages(int pages) {
+	public void setPages(Integer pages) {
 		this.pages = pages;
 	}
 
-	public int getRating() {
+	public Integer getRating() {
 		return rating;
 	}
 
-	public void setRating(int rating) {
+	public void setRating(Integer rating) {
 		this.rating = rating;
 	}
 

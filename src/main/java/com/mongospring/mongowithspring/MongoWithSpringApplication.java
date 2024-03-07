@@ -18,6 +18,7 @@ import java.util.Scanner;
 @EnableMongoRepositories
 public class MongoWithSpringApplication implements CommandLineRunner {
 
+    Scanner sc = new Scanner(System.in);
     @Autowired
     BookStoreRepository bookStoreRepo;
 
@@ -34,7 +35,61 @@ public class MongoWithSpringApplication implements CommandLineRunner {
         List<Books> books = bookStoreRepo.findAll();
         displayData(books);
 
-        addNewBooksToCatalog();
+        while(true) {
+            System.out.println("1. View all books in the catalog");
+            System.out.println("2. Add books to the catalog");
+            System.out.println("3. Search books by ID");
+            System.out.println("4. Search books by author");
+            System.out.println("5. Search books by title");
+            System.out.println("6. Search books by rating");
+            System.out.println("7. Search books by genre");
+            System.out.println("8. Exit");
+            System.out.print("Enter an option from the above list: ");
+            int optionSelected = sc.nextInt();
+            sc.nextLine();
+
+            if(optionSelected < 1 && optionSelected > 8){
+                System.out.println("Incorrect option selected, please try again");
+                continue;
+            }
+
+            switch (optionSelected) {
+                case 1 -> {
+                    books = bookStoreRepo.findAll();
+                    displayData(books);
+                }
+                case 2 -> addNewBooksToCatalog();
+                case 3 -> {
+                    System.out.println("Enter a ID: ");
+                    String id = sc.nextLine();
+                    displayData(List.of(bookStoreRepo.findItemById(id)));
+                }
+                case 4 -> {
+                    System.out.println("Enter an author: ");
+                    String author = sc.nextLine();
+                    displayData(bookStoreRepo.findItemByAuthor(author));
+                }
+                case 5 -> {
+                    System.out.println("Enter a title: ");
+                    String title = sc.nextLine();
+                    displayData(List.of(bookStoreRepo.findItemByTitle(title)));
+                }
+                case 6 -> {
+                    System.out.println("Enter a rating: ");
+                    int rating = sc.nextInt(); sc.nextLine();
+                    displayData(bookStoreRepo.findItemByRating(rating));
+                }
+                case 7 -> {
+                    System.out.println("Enter a genre: ");
+                    String genre = sc.nextLine();
+                    displayData(bookStoreRepo.findItemByGenre(genre));
+                }
+                case 8 -> {
+                    sc.close();
+                    System.exit(0);
+                }
+            }
+        }
     }
 
     private void addNewBooksToCatalog() {
@@ -43,7 +98,7 @@ public class MongoWithSpringApplication implements CommandLineRunner {
 
         char addAnother = 'Y';
         int idSuffix = 7;
-        Scanner sc = new Scanner(System.in);
+
 
         while (addAnother == 'Y') {
             System.out.println("Enter the title of the book");
@@ -82,9 +137,12 @@ public class MongoWithSpringApplication implements CommandLineRunner {
             addAnother = sc.nextLine().toUpperCase().charAt(0);
             System.out.println("**********************************");
         }
+
     }
 
     private void displayData(List<Books> books) {
+        if(books.isEmpty())
+            System.out.println("No data found for this query.");
         AsciiTable table = new AsciiTable();
         table.addRule();
         table.addRow("Title", "Author", "Pages", "Rating", "Genres");
