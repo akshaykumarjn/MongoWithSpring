@@ -48,7 +48,7 @@ public class MongoWithSpringApplication implements CommandLineRunner {
             int optionSelected = sc.nextInt();
             sc.nextLine();
 
-            if(optionSelected < 1 && optionSelected > 8){
+            if(optionSelected < 1 || optionSelected > 8){
                 System.out.println("Incorrect option selected, please try again");
                 continue;
             }
