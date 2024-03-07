@@ -33,7 +33,7 @@ public class MongoWithSpringApplication implements CommandLineRunner {
         System.out.println("Below are the titles currently present in the BookStore\n");
         List<Books> books = bookStoreRepo.findAll();
         displayData(books);
-        
+
         addNewBooksToCatalog();
     }
 
