@@ -1,26 +1,26 @@
 package com.mongospring.mongowithspring.repository;
 
+import com.mongospring.mongowithspring.model.builders.Book;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 import java.util.List;
-import com.mongospring.mongowithspring.model.Books;
 
-public interface BookStoreRepository extends MongoRepository<Books, String> {
+public interface BookStoreRepository extends MongoRepository<Book, String> {
 	
 	@Query("{title:'?0'}")
-	Books findItemByTitle(String title);
+	Book findItemByTitle(String title);
 
 	@Query("{_id:'?0'}")
-	Books findItemById(String id);
+	Book findItemById(String id);
 
 	@Query("{rating: ?0}")
-	List<Books> findItemByRating(Integer rating);
+	List<Book> findItemByRating(Integer rating);
 
 	@Query("{genres: '?0'}}")
-	List<Books> findItemByGenre(String genre);
+	List<Book> findItemByGenre(String genre);
 	
 	@Query(value = "{author:'?0'}")
-	List<Books> findItemByAuthor(String author);
+	List<Book> findItemByAuthor(String author);
 	
 	long count();
 }

@@ -1,7 +1,7 @@
 package com.mongospring.mongowithspring;
 
-import com.mongospring.mongowithspring.model.Books;
-import com.mongospring.mongowithspring.model.Review;
+import com.mongospring.mongowithspring.model.builders.Review;
+import com.mongospring.mongowithspring.model.builders.Book;
 import com.mongospring.mongowithspring.repository.BookStoreRepository;
 import de.vandermeer.asciitable.AsciiTable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +32,7 @@ public class MongoWithSpringApplication implements CommandLineRunner {
         System.out.println("Welcome to BookStore!".toUpperCase());
 
         System.out.println("Below are the titles currently present in the BookStore\n");
-        List<Books> books = bookStoreRepo.findAll();
+        List<Book> books = bookStoreRepo.findAll();
         displayData(books);
 
         while(true) {
@@ -128,8 +128,20 @@ public class MongoWithSpringApplication implements CommandLineRunner {
             String id = "BK00" + idSuffix;
             idSuffix += 1;
 
-            Books book = new Books(id, title, author, pages, ratings, Arrays.asList(genres.split(",")),
-                    List.of(new Review(commentTitle, commentDescription)));
+            /*Books book = new Books(id, title, author, pages, ratings, Arrays.asList(genres.split(",")),
+                    List.of(new Review(commentTitle, commentDescription)));*/
+
+
+            Book book = Book.builder()
+                            .id(id)
+                            .title(title)
+                            .author(author)
+                            .pages(pages)
+                            .rating(ratings)
+                            .genres(Arrays.stream(genres.split(",")).map(String::trim).toList())
+                            .reviews(List.of(Review.builder().commentTitle(commentTitle).commentDescription(commentDescription).build()))
+                            .build();
+
             bookStoreRepo.save(book);
 
             System.out.println("\nBook Saved Successfully!!");
@@ -140,14 +152,14 @@ public class MongoWithSpringApplication implements CommandLineRunner {
 
     }
 
-    private void displayData(List<Books> books) {
+    private void displayData(List<Book> books) {
         if(books.isEmpty())
             System.out.println("No data found for this query.");
         AsciiTable table = new AsciiTable();
         table.addRule();
         table.addRow("Title", "Author", "Pages", "Rating", "Genres");
 
-        for (Books b : books) {
+        for (Book b : books) {
             table.addRule();
             table.addRow(b.getTitle(), b.getAuthor(), b.getPages(), b.getRating(), b.getGenres());
 
